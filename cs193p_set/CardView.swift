@@ -15,7 +15,7 @@ struct CardView: View{
         GeometryReader(content:  { geometry in
             ZStack{
                 let shape = RoundedRectangle(cornerRadius: 20)
-                
+                if card.isFaceUp{
                 shape
                     .fill()
                     .foregroundColor(.white)
@@ -26,7 +26,10 @@ struct CardView: View{
                     ForEach(0..<card.number, id:\.self) {_ in
                         symbol.frame(width: geometry.size.width/2, height: geometry.size.height/6)}
                 }.foregroundColor(cardColor)
-                    .padding(2)
+            
+                }else{
+                    shape.fill()
+                }
             }
         })
     }
@@ -54,7 +57,7 @@ struct CardView: View{
                 case "striped":
                 Diamond().opacity(0.5).aspectRatio(1, contentMode: .fit)
                 case "outliner":
-                Diamond().stroke(lineWidth: 7).aspectRatio(1, contentMode: .fit)
+                Diamond().stroke(lineWidth: 2).aspectRatio(1, contentMode: .fit)
             default:
                 Text("Error")
             }
@@ -66,7 +69,7 @@ struct CardView: View{
                 case "striped":
                 Circle().opacity(0.5)
                 case "outliner":
-                Circle().stroke(lineWidth: 7)
+                Circle().stroke(lineWidth: 2)
             default:
                 Text("Error")
             }
@@ -79,7 +82,7 @@ struct CardView: View{
                 case "striped":
                 Rectangle().opacity(0.5)
                 case "outliner":
-                Rectangle().stroke(lineWidth: 7)
+                Rectangle().stroke(lineWidth: 2)
             default:
                 Text("Error")
             }
@@ -93,7 +96,7 @@ struct CardView: View{
 }
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
-        let card = Card(id: 0, isChosed: false, isMatched: false, number: 1, shape: "diamond", color: "red", shade: "solid")
+        let card = Card(id: 0, isFaceUp: true, isChosed: false, isMatched: false, number: 3, shape: "diamond", color: "red", shade: "outliner")
         CardView(card: card)
     }
 }

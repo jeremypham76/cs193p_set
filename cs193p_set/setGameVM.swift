@@ -19,6 +19,10 @@ class setGameVM: ObservableObject{
         return setModel.deckShow
     }
     
+    func choose(_ card: Card){
+        setModel.choose(card)
+    }
+    
 }
 
 

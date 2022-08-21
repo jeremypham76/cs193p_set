@@ -14,7 +14,11 @@ struct setCardView: View {
     var body: some View {
         VStack{
             AspectVGrid(items: gameVM.deck, aspectRatio: 2/3, content: {card in
-                CardView(card: card).padding(5)
+                CardView(card: card)
+                    .padding(5)
+                    .onTapGesture {
+                        gameVM.choose(card)
+                    }
             })
         }
     }

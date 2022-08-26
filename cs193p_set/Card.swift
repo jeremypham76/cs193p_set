@@ -33,7 +33,7 @@ struct Card: Identifiable, Equatable{
         let isColor = (card1.color == card2.color && card1.color == card3.color) ||
         (card1.color != card2.color && card1.color != card3.color && card2.color != card3.color)
 
-        return isNumber || isShape || isShade || isColor
+        return isNumber && isShape && isShade && isColor
             
 
     }

@@ -15,48 +15,64 @@ struct setGameModel{
     private var firstPickIndex, secondPickIndex: Int?
     
     mutating func choose( _ card: Card){
-        
+    
         if let currentChosen = deckShow.firstIndex(where: {$0.id == card.id})
         {
             deckShow[currentChosen].isChosed.toggle()
-            print(chosenIndices)
-            if chosenIndices.count == 3, isMatch
+            if chosenIndices.count == 3
             {
-                deckShow[chosenIndices[0]].isFaceUp.toggle()
-                deckShow[chosenIndices[1]].isFaceUp.toggle()
-                deckShow[chosenIndices[2]].isFaceUp.toggle()
-            }
-            else {
-                 print("keep going")
+                if isMatch{
+                    ReplaceCards()
+                }
+                deckShow.indices.forEach{
+                    deckShow[$0].isChosed = false
+                }
+                }
             }
         }
+    
+    mutating func Add3More(){
+        if deckArray.count >= 3{
+            for _ in 0..<3{
+                deckShow.append(deckArray.popLast()!)
+            }
+        } else if deckArray.count == 2 {
+            for _ in 0..<2{
+                deckShow.append(deckArray.popLast()!)
+            }
+        }else if deckArray.count == 1 {
+            deckShow.append(deckArray.popLast()!)
+        } else if deckArray.isEmpty{
+        }
+        
     }
     
+    private func isSetInDeck(cards: [Card]) -> Bool{
+        for i in 0..<cards.count-2{
+            for j in (i+1)..<(cards.count-1){
+                for k in (j+1)..<(cards.count){
+                    if Card.intheSameSet(card1: cards[i], card2: cards[j], card3: cards[k]){
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
     
-    
+    //remove the bigger indexes first, otherwise the deckShow get messed up
+    private mutating func ReplaceCards() {
+        chosenIndices.reversed().forEach({i in
+            deckShow.remove(at: i)
+        })
+        
+    }
     
     
     private var isMatch: Bool {
         get{
             if chosenIndices.count == 3{
-                let card1 = deckShow[chosenIndices[0]]
-                let card2 = deckShow[chosenIndices[1]]
-                let card3 = deckShow[chosenIndices[2]]
-                
-                let isNumber = (card1.number == card2.number && card1.number == card3.number) ||
-                    (card1.number != card2.number && card1.number != card3.number && card2.number != card3.number)
-
-                let isShape = (card1.shape == card2.shape && card1.shape == card3.shape) ||
-                (card1.shape != card2.shape && card1.shape != card3.shape && card2.shape != card3.shape)
-
-                let isShade = (card1.shade == card2.shade && card1.shade == card3.shade) ||
-                (card1.shade != card2.shade && card1.shade != card3.shade && card2.shade != card3.shade)
-
-                let isColor = (card1.color == card2.color && card1.color == card3.color) ||
-                (card1.color != card2.color && card1.color != card3.color && card2.color != card3.color)
-
-                return isNumber || isShape || isShade || isColor
-                //return Card.intheSameSet(card1: deckShow[chosenIndices[0]], card2:deckShow[chosenIndices[1]], card3: deckShow[chosenIndices[2]])
+                  return Card.intheSameSet(card1: deckShow[chosenIndices[0]], card2:deckShow[chosenIndices[1]], card3: deckShow[chosenIndices[2]])
             }
             else{
                 return false
@@ -94,8 +110,13 @@ struct setGameModel{
         deckArray = deckArray.shuffled()
         
         deckShow = []
-        for _ in 0..<20{
+        for _ in 0..<4{
             deckShow.append(deckArray.popLast()!)
+        }
+        
+        //make sure when created, the deck will always have a set
+        while (isSetInDeck(cards: deckShow) == false){
+            Add3More()
         }
     }
 }

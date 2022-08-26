@@ -11,6 +11,18 @@ import SwiftUI
 struct setCardView: View {
     @ObservedObject var gameVM = setGameVM()
     
+    var dealCards: some View{
+        Button( action: {
+            gameVM.dealCards()
+        }, label: {
+            VStack {
+                Text("MORE")
+                Text("CARDS")
+            }.foregroundColor(.blue)
+                .padding(7)
+        })
+    }
+    
     var body: some View {
         VStack{
             AspectVGrid(items: gameVM.deck, aspectRatio: 2/3, content: {card in
@@ -20,6 +32,9 @@ struct setCardView: View {
                         gameVM.choose(card)
                     }
             })
+            HStack{
+                dealCards.font(.headline)
+            }
         }
     }
 }

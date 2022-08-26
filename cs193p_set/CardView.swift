@@ -13,24 +13,25 @@ struct CardView: View{
     var body: some View{
         
         GeometryReader(content:  { geometry in
-            ZStack{
-                let shape = RoundedRectangle(cornerRadius: 20)
-                if card.isFaceUp{
-                shape
-                    .fill()
-                    .foregroundColor(.white)
-                shape
-                    .strokeBorder(lineWidth: 5)
-                
-                VStack{
-                    ForEach(0..<card.number, id:\.self) {_ in
-                        symbol.frame(width: geometry.size.width/2, height: geometry.size.height/6)}
-                }.foregroundColor(cardColor)
-            
-                }else{
-                    shape.fill()
+                ZStack{
+                    let shape = RoundedRectangle(cornerRadius: 20)
+                    shape
+                        .fill()
+                        .foregroundColor(.white)
+                    if card.isChosed{
+                        shape
+                            .strokeBorder(lineWidth: 7)
+                            .foregroundColor(.yellow)
+                        
+                    }else{
+                        shape
+                            .strokeBorder(lineWidth: 5)
+                    }
+                    VStack{
+                        ForEach(0..<card.number, id:\.self) {_ in
+                            symbol.frame(width: geometry.size.width/2, height: geometry.size.height/6)}
+                    }.foregroundColor(cardColor)
                 }
-            }
         })
     }
     

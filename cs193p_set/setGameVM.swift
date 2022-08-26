@@ -23,6 +23,10 @@ class setGameVM: ObservableObject{
         setModel.choose(card)
     }
     
+    func dealCards() {
+        setModel.Add3More()
+    }
+    
 }
 
 
